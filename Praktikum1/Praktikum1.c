@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+// Example: https://thispointer.com/posix-detached-vs-joinable-threads-pthread_join-pthread_detach-examples/
 
 void*  function( void*  arg)
 {
