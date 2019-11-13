@@ -39,13 +39,14 @@ void* second(void* args) {
 
 	// Waste time after semapore
 	while (1 == 1) {
-		waste_msecs(msec);
 		int semWait = sem_wait(&sem);
-	//	printf ("Waste time TASK\n");
 		if (semWait < 0) {
 			perror("wait Semaphore");
 			exit(-1);
 		}
+		waste_msecs(msec);
+	//	printf ("Waste time TASK\n");
+
 	}
 
 
@@ -53,9 +54,7 @@ void* second(void* args) {
 }
 
 void* first(void* args){
-
 	int ms = *(int*) args;
-	int i;
 	while (1 == 1){
 	//	printf ("Waste time MAIN\n");
 		++tacts;
@@ -94,24 +93,24 @@ void* first(void* args){
 int main(int argc, char *argv[]) {
 
 	// Set thread 1 attributes
-	schedParams.sched_priority = 10;
+	schedParams.sched_priority = 150;
+	pthread_attr_init(&attr1);
 	int setSched = pthread_attr_setschedparam(&attr1, &schedParams);
 	if (setSched != 0 ){
 		printf ("pthread_setSched: %s\n", strerror(setSched));
 		exit(-1);
 	}
-	pthread_attr_init(&attr1);
 	pthread_attr_setdetachstate(&attr1, PTHREAD_CREATE_JOINABLE);
 	pthread_attr_setinheritsched(&attr1,PTHREAD_EXPLICIT_SCHED);
 
 	// Set thread 2 attributes
-	schedParams.sched_priority = 150;
+	schedParams.sched_priority = 100;
+	pthread_attr_init(&attr2);
 	setSched = pthread_attr_setschedparam(&attr2, &schedParams);
 	if (setSched != 0 ){
 		printf ("pthread_setSched: %s\n", strerror(setSched));
 		exit(-1);
 	}
-	pthread_attr_init(&attr2);
 	pthread_attr_setdetachstate(&attr2, PTHREAD_CREATE_JOINABLE);
 	pthread_attr_setinheritsched(&attr2,PTHREAD_EXPLICIT_SCHED);
 
